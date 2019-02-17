@@ -10,24 +10,16 @@ using System.Windows.Forms;
 
 namespace BlackJack
 {
-    public partial class Blackjack : Form
+    public partial class Play : Form
     {
-        public Blackjack()
+        public Play()
         {
             InitializeComponent();
         }
 
         private void button1Play_Click(object sender, EventArgs e)
         {
-            Play ui = new Play();
-            this.Hide();
-            ui.ShowDialog();
-            this.Show();
-        }
-
-        private void button1Exit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
+            this.Close();
         }
     }
 }
