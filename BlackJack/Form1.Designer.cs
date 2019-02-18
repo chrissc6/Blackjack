@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Blackjack));
             this.label1 = new System.Windows.Forms.Label();
             this.button1Play = new System.Windows.Forms.Button();
             this.button1Exit = new System.Windows.Forms.Button();
@@ -78,6 +79,7 @@
             this.Controls.Add(this.label1);
             this.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Blackjack";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
