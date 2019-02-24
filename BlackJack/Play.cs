@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace BlackJack
 {
@@ -15,8 +16,7 @@ namespace BlackJack
         public Play()
         {
             InitializeComponent();
-            Hand1();
-            GAME();
+            
             
             
         }
@@ -36,6 +36,9 @@ namespace BlackJack
         Random rng = new Random();
         string x3s;
         string x4s;
+        int hitcount = 0;
+
+        public string img1 { get; set; }
 
         private void GAME()
         {
@@ -71,6 +74,8 @@ namespace BlackJack
 
         private void Hand1()
         {
+            int g;
+
             int x1 = rng.Next(0, 52);
             string x1s;
             int x2 = rng.Next(0, 52);
@@ -80,13 +85,47 @@ namespace BlackJack
             
 
             x1s = cards[x1];
-            p1 = intcards[x1];
+
+            x1 = Check11(x1);
+            if(x1 == 100)
+            {
+                p1 = 1;
+            }
+            else if(x1 == 1100)
+            {
+                p1 = 11;
+            }
+            else
+            {
+                p1 = intcards[x1];
+            }
+            
             x2s = cards[x2];
-            p1 += intcards[x2];
+
+            x2 = Check11(x2);
+            if (x2 == 100)
+            {
+                p1 += 1;
+            }
+            else if (x2 == 1100)
+            {
+                p1 += 11;
+            }
+            else
+            {
+                p1 += intcards[x2];
+            }
+
             x3s = cards[x3];
             dh = intcards[x3];
             x4s = cards[x4];
             dh += intcards[x4];
+
+            g = 1;
+            PrintPic(x1s, x2s);
+
+            
+            
 
             label3PLAYERhand.Text = $"{x1s}, {x2s}";
             label2Ptotal.Text = $"Total: {p1}";
@@ -94,9 +133,52 @@ namespace BlackJack
             label2Dtotal.Text = $"Total: {intcards[x3]}";
         }
 
+        private int Check11(int x1)
+        {
+            int z;
+
+            if((x1 == 0) || (x1 == 13) || (x1 == 26) || (x1 == 39))
+            {
+                const string message = "Do you want your ace to be 11?";
+                const string caption = "Ace Check";
+                var result = MessageBox.Show(message, caption,
+                                     MessageBoxButtons.YesNo,
+                                     MessageBoxIcon.Question);
+                if(result == DialogResult.Yes)
+                {
+                    z = 1100;
+                    return z;
+                }
+                else
+                {
+                    z = 100;
+                    return z;
+                }
+            }
+
+            z = x1;
+            return z;
+            
+        }
+
+        private void PrintPic(string x1s, string x2s)
+        {
+            img1 = @"Resources\";
+            img1 += x1s;
+            img1 += ".png";
+
+            PBp1a.Image = Image.FromFile(img1);
+
+            img1 = @"Resources\";
+            img1 += x2s;
+            img1 += ".png";
+
+            PBp1b.Image = Image.FromFile(img1);
+        }
+
         private void WinCheck()
         {
-            Button[] buttons = new Button[] { button1HIT, button2STAND };
+            Button[] buttons = new Button[] { button1HIT, button2STAND, button2START };
 
             if (p1 == 21)
             {
@@ -131,17 +213,67 @@ namespace BlackJack
             string x1s;
 
             x1s = cards[x1];
-            p1 += intcards[x1];
+            x1 = Check11(x1);
+            if (x1 == 100)
+            {
+                p1 += 1;
+            }
+            else if (x1 == 1100)
+            {
+                p1 += 11;
+            }
+            else
+            {
+                p1 += intcards[x1];
+            }
+            
 
             label3PLAYERhand.Text += $", {x1s}";
             label2Ptotal.Text = $"Total: {p1}";
 
+            hitcount++;
+            PrintHit(hitcount, x1s);
+
             CheckLose();
+        }
+
+        private void PrintHit(int hitcount, string x1s)
+        {
+
+            switch (hitcount)
+            {
+                case 1:
+                    img1 = @"Resources\";
+                    img1 += x1s;
+                    img1 += ".png";
+
+                    PBp1c.Image = Image.FromFile(img1);
+                    break;
+
+                case 2:
+                    img1 = @"Resources\";
+                    img1 += x1s;
+                    img1 += ".png";
+
+                    PBp1d.Image = Image.FromFile(img1);
+                    break;
+
+                case 3:
+                    img1 = @"Resources\";
+                    img1 += x1s;
+                    img1 += ".png";
+
+                    PBp1e.Image = Image.FromFile(img1);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void CheckLose()
         {
-            Button[] buttons = new Button[] { button1HIT, button2STAND };
+            Button[] buttons = new Button[] { button1HIT, button2STAND, button2START };
 
             if (p1 > 21)
             {
@@ -178,9 +310,21 @@ namespace BlackJack
                 }
             }
 
+            while((p1 > dh) && (dh < 21))
+            {
+                int x1 = rng.Next(0, 52);
+                string x1s;
+
+                x1s = cards[x1];
+                dh += intcards[x1];
+
+                label2DEALERhand.Text += $", {x1s}";
+                label2Dtotal.Text = $"Total: {dh}";
+            }
+
             if(dh>21)
             {
-                Button[] buttons = new Button[] { button1HIT, button2STAND };
+                Button[] buttons = new Button[] { button1HIT, button2STAND, button2START };
                 label2WIN.Text = "WINNER!";
                 foreach (Button i in buttons)
                 {
@@ -190,7 +334,7 @@ namespace BlackJack
 
             if (dh < p1)
             {
-                Button[] buttons = new Button[] { button1HIT, button2STAND };
+                Button[] buttons = new Button[] { button1HIT, button2STAND, button2START };
                 label2WIN.Text = "WINNER!";
                 foreach (Button i in buttons)
                 {
@@ -200,8 +344,18 @@ namespace BlackJack
 
             if ((dh > p1) && (dh < 22))
             {
-                Button[] buttons = new Button[] { button1HIT, button2STAND };
+                Button[] buttons = new Button[] { button1HIT, button2STAND, button2START };
                 label2WIN.Text = "Lose.";
+                foreach (Button i in buttons)
+                {
+                    i.Enabled = false;
+                }
+            }
+
+            if(dh == p1)
+            {
+                Button[] buttons = new Button[] { button1HIT, button2STAND, button2START };
+                label2WIN.Text = "Push.";
                 foreach (Button i in buttons)
                 {
                     i.Enabled = false;
@@ -214,6 +368,12 @@ namespace BlackJack
             Play ui = new Play();
             this.Hide();
             ui.ShowDialog();
+        }
+
+        private void button2START_Click(object sender, EventArgs e)
+        {
+            Hand1();
+            GAME();
         }
     }
 }
