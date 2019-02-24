@@ -38,6 +38,7 @@
             this.label2Ptotal = new System.Windows.Forms.Label();
             this.label2Dtotal = new System.Windows.Forms.Label();
             this.label2WIN = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1Play
@@ -131,12 +132,25 @@
             this.label2WIN.Size = new System.Drawing.Size(0, 73);
             this.label2WIN.TabIndex = 10;
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.button1.Location = new System.Drawing.Point(12, 51);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(79, 33);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "RESTART";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Play
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label2WIN);
             this.Controls.Add(this.label2Dtotal);
             this.Controls.Add(this.label2Ptotal);
@@ -167,5 +181,6 @@
         private System.Windows.Forms.Label label2Ptotal;
         private System.Windows.Forms.Label label2Dtotal;
         private System.Windows.Forms.Label label2WIN;
+        private System.Windows.Forms.Button button1;
     }
 }

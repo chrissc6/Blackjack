@@ -135,28 +135,47 @@ namespace BlackJack
 
             label3PLAYERhand.Text += $", {x1s}";
             label2Ptotal.Text = $"Total: {p1}";
+
+            CheckLose();
+        }
+
+        private void CheckLose()
+        {
+            Button[] buttons = new Button[] { button1HIT, button2STAND };
+
+            if (p1 > 21)
+            {
+                label2WIN.Text = "Lose.";
+                foreach (Button i in buttons)
+                {
+                    i.Enabled = false;
+                }
+
+            }
+            else
+            {
+
+            }
         }
 
         private void dealerDraw()
         {
-            int count = 0;
-
-            while (dh < 17)
+            label2DEALERhand.Text = $"{x3s}, {x4s}";
+            label2Dtotal.Text = $"Total: {dh}";
+            
+            if(dh < p1)
             {
-                if (count == 0)
+                while (dh < 17)
                 {
-                    label2DEALERhand.Text = $"{x3s}, {x4s}";
+                    int x1 = rng.Next(0, 52);
+                    string x1s;
+
+                    x1s = cards[x1];
+                    dh += intcards[x1];
+
+                    label2DEALERhand.Text += $", {x1s}";
                     label2Dtotal.Text = $"Total: {dh}";
-                    count++;
                 }
-                int x1 = rng.Next(0, 52);
-                string x1s;
-
-                x1s = cards[x1];
-                dh += intcards[x1];
-
-                label2DEALERhand.Text += $", {x1s}";
-                label2Dtotal.Text = $"Total: {dh}";
             }
 
             if(dh>21)
@@ -168,6 +187,33 @@ namespace BlackJack
                     i.Enabled = false;
                 }
             }
+
+            if (dh < p1)
+            {
+                Button[] buttons = new Button[] { button1HIT, button2STAND };
+                label2WIN.Text = "WINNER!";
+                foreach (Button i in buttons)
+                {
+                    i.Enabled = false;
+                }
+            }
+
+            if ((dh > p1) && (dh < 22))
+            {
+                Button[] buttons = new Button[] { button1HIT, button2STAND };
+                label2WIN.Text = "Lose.";
+                foreach (Button i in buttons)
+                {
+                    i.Enabled = false;
+                }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Play ui = new Play();
+            this.Hide();
+            ui.ShowDialog();
         }
     }
 }
